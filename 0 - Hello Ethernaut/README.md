@@ -58,4 +58,4 @@ Now we will be prompted with a metamask transaction. As we can see in the image 
 
 After confirming the transaction and waiting for it to be mined, we can now click "Submit Instance" button.
 
-***Congratulations! You have completed the tutorial.***
+### ***Congratulations! You have completed the tutorial.***

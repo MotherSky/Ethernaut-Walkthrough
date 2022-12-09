@@ -108,4 +108,4 @@ Now we should be the owner of the smart contract, let's call withdraw() and thus
 >  await contract.withdraw()
 ```
 
-***Congratulations, You now know the basics of how ether goes in and out of contracts, including the usage of the fallback method.***
+### ***Congratulations, You now know the basics of how ether goes in and out of contracts, including the usage of the fallback method.***
