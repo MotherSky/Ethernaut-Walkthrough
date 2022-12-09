@@ -10,7 +10,7 @@ We can now open the browser console and start testing, we can for example print 
 
 <img src="img/help.png" alt="Help method">
 
-###Level Completion
+### Level Completion
 
 Now let's start interacting with the contract and complete the level:
 
