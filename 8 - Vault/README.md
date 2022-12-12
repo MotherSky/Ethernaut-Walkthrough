@@ -33,6 +33,7 @@ function unlock(bytes32 _password) public {
 ## Level Completion
 
 Everything used in a smart contract is publicly visible, even local variables and state variables marked ***private***.
+Marking a variable private only only prevents other contracts from accessing it.
 We can access to the password value from the storage using [web3.eth.getStorageAt](https://web3js.readthedocs.io/en/v1.2.11/web3-eth.html#getstorageat):
 
 ```js
@@ -44,4 +45,4 @@ Let's unlock the vault now:
 >  await contract.unlock("0x412076657279207374726f6e67207365637265742070617373776f7264203a29")
 ```
 
-**That's it.**
+**`To ensure that data is private, it needs to be encrypted before being put onto the blockchain. The decryption key should never be sent on-chain. [zk-SNARKs](https://blog.ethereum.org/2016/12/05/zksnarks-in-a-nutshell) provide a way to determine whether someone possesses a secret parameter, without ever having to reveal the parameter.`**
