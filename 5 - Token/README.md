@@ -48,6 +48,8 @@ function balanceOf(address _owner) public view returns (uint balance) {
 if we try to send more tokens ***(21)*** than we already have ***(20)*** .The following line the require will try subtracting 21 from our balance (20), and since the balances are ***uint*** this will lead to an underflow, meaning our new balance will be equal to ***2<sup>256</sup>-1***.
 
 ```js
+> (await contract.balanceOf("0xa0D3DFEE9945d53532aDaF60acB4421de5baecA8")).toString()
+<· "20"
 >  await contract.transfer("0x000000000000000000000000000000000000dead", 21)
 ```
 Now let's check our balance:
