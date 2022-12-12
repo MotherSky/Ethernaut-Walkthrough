@@ -59,7 +59,7 @@ One of the popular means of achieving on-chain randomness is `Block-hashing`, at
 
 To get cryptographically proven random numbers, you can use [Chainlink VRF](https://docs.chain.link/vrf/v2/subscription/examples/get-a-random-number) or other solutions such as [RANDAO](https://github.com/randao/randao), [provable.xyz](https://provable.xyz/)
 
-### Level Completion
+## Level Completion
 
 We can get the block number and hash from console using [web3.eth.getBlock](https://web3js.readthedocs.io/en/v1.2.11/web3-eth.html#getblock) :
 ```js
