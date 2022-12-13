@@ -70,3 +70,4 @@ contract KingHack {
 ```
 After deploying this contract, let's call `hack()` with a value of wei more or equal than `prize` and with the game instance as argument to claim `king`.
 
+**This level is inspired from [King Of The Ether](http://www.kingoftheether.com/postmortem.html) Game**
