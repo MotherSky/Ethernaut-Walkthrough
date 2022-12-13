@@ -52,7 +52,7 @@ Now let's print the password variable and then call authenticate() :
 >  await contract.authenticate("ethernaut0")
 ```
 
-Now we will be prompted with a metamask transaction. As we can see in the image below, this a function call to authenticate() with "ethernaut" as parameter **(65746865726e61757430 is hexcode of the string "ethernaut0")**
+Now we will be prompted with a metamask transaction. As we can see in the image below, this a function call to authenticate() with "ethernaut0" as parameter **(65746865726e61757430 is hexcode of the string "ethernaut0")**
 
 <img src="img/transaction.png" alt="Transaction" width="200"/>
 
