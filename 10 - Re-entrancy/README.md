@@ -96,4 +96,12 @@ we can see the `donate()` call followed by ***11*** `withdraw()` functions.
 
 `Note: we might have to raise the Gas Limit on Metamask a bit if there are a lot of withdraw() calls so the transaction won't revert because of insufficient gas`
 
-There are multiple ways to prevent reentrancy attacks
+To prevent reentrancy attacks when moving funds of contracts we can use several methods:
+
+* [Checks-Effects-Interaction Pattern](https://docs.soliditylang.org/en/develop/security-considerations.html#use-the-checks-effects-interactions-pattern) : Using this pattern when coding smart contracts is one of the ways to prevent reentrancy attacks. Checks must be done first, if all checks passed, effects to the state variables of the current contract should be made. Interaction with other contracts should be the very last step in any function.
+
+* Mutex Or Lock: This will lock the current state so that any malicious attempts will be reverted. This ensures hat the contract is not interrupted while it is in the middle of processing a transaction. The unlock will then occur at the end of the function so it can be accessed next time. This design cannot be applied to all function logics..
+
+* Pull Payments: The idea is that instead of pushing funds to a receiver, they have to be pulled out of the contract, that way we do not run arbitrary code.
+
+* [ReentrancyGuard](https://docs.openzeppelin.com/contracts/3.x/api/utils#ReentrancyGuard) : Made by OpenZeppein, inheriting from this contract will make the ***nonReentrant*** modifier available.
