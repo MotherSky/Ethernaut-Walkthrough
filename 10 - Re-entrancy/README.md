@@ -4,16 +4,19 @@ The goal of this level is to steal all the funds from the contract.
 
 Things that might help:
 
-* Untrusted contracts can execute code where you least expect it.
-* Fallback methods
-* Throw/revert bubbling
+- Untrusted contracts can execute code where you least expect it.
+- Fallback methods
+- Throw/revert bubbling
 
 ## Code Breakdown
+
+[The Smart Contract's Code can be seen here.](Reentrance.sol)
 
 ```solidity
 using SafeMath for uint256;
 mapping(address => uint) public balances;
 ```
+
 The contract has one public mapping `balances` to keep tracking the balance of each address that has donated.
 
 ```solidity
@@ -21,6 +24,7 @@ function donate(address _to) public payable {
     balances[_to] = balances[_to].add(msg.value);
   }
 ```
+
 `donate` allows users to donate funds to a specific address by calling the function and specifying the recipient's address as an argument. The function uses the SafeMath library to add the value of the donation to the recipient's balance.
 
 ```solidity
@@ -47,7 +51,7 @@ function withdraw(uint _amount) public {
 
 This contract is vulnerable to a reentrancy attack.
 
-***A reentrancy attack occurs when a contract calls another contract in a way that allows the called contract to call back into the original contract before the original contract has finished executing. This can potentially allow an attacker to repeatedly withdraw funds from the contract before the contract has a chance to update the user's balance, allowing the attacker to steal funds from the contract.***
+**_A reentrancy attack occurs when a contract calls another contract in a way that allows the called contract to call back into the original contract before the original contract has finished executing. This can potentially allow an attacker to repeatedly withdraw funds from the contract before the contract has a chance to update the user's balance, allowing the attacker to steal funds from the contract._**
 
 the `withdraw` function calls the `msg.sender` address, which may be an attacker-controlled contract that is designed to call back into the withdraw function in an attempt to repeatedly withdraw funds.
 
@@ -61,7 +65,7 @@ pragma solidity ^0.6.0;
 
 interface Reentrance {
     function withdraw(uint _amount) external;
-    function donate(address _to) external payable; 
+    function donate(address _to) external payable;
 }
 
 contract ReentranceHack {
@@ -85,23 +89,23 @@ contract ReentranceHack {
 ```
 
 Let's deploy our contract on [Remix IDE](https://remix.ethereum.org), and execute the `hack()` with a value of 10000000000000000 wei or 0.0001 ethers (same as the game instance's current balance).
-After the execution, we will end up with ***0.0011 eth***:
+After the execution, we will end up with **_0.0011 eth_**:
 0.0001 eth deposited earlier + 0.001 eth already in game instance balance.
 
 Let's see how our transaction went in the block explorer:
 
 <img src="img/block-explorer.png">
 
-we can see the `donate()` call followed by ***11*** `withdraw()` functions.
+we can see the `donate()` call followed by **_11_** `withdraw()` functions.
 
 `Note: we might have to raise the Gas Limit on Metamask a bit if there are a lot of withdraw() calls so the transaction won't revert because of insufficient gas`
 
 To prevent reentrancy attacks when moving funds of contracts we can use several methods:
 
-* [Checks-Effects-Interaction Pattern](https://docs.soliditylang.org/en/develop/security-considerations.html#use-the-checks-effects-interactions-pattern) : Using this pattern when coding smart contracts is one of the ways to prevent reentrancy attacks. Checks must be done first, if all checks passed, effects to the state variables of the current contract should be made. Interaction with other contracts should be the very last step in any function.
+- [Checks-Effects-Interaction Pattern](https://docs.soliditylang.org/en/develop/security-considerations.html#use-the-checks-effects-interactions-pattern) : Using this pattern when coding smart contracts is one of the ways to prevent reentrancy attacks. Checks must be done first, if all checks passed, effects to the state variables of the current contract should be made. Interaction with other contracts should be the very last step in any function.
 
-* Mutex Or Lock: This will lock the current state so that any malicious attempts will be reverted. This ensures hat the contract is not interrupted while it is in the middle of processing a transaction. The unlock will then occur at the end of the function so it can be accessed next time. This design cannot be applied to all function logics..
+- Mutex Or Lock: This will lock the current state so that any malicious attempts will be reverted. This ensures hat the contract is not interrupted while it is in the middle of processing a transaction. The unlock will then occur at the end of the function so it can be accessed next time. This design cannot be applied to all function logics..
 
-* Pull Payments: The idea is that instead of pushing funds to a receiver, they have to be pulled out of the contract, that way we do not run arbitrary code.
+- Pull Payments: The idea is that instead of pushing funds to a receiver, they have to be pulled out of the contract, that way we do not run arbitrary code.
 
-* [ReentrancyGuard](https://docs.openzeppelin.com/contracts/3.x/api/utils#ReentrancyGuard) : Made by OpenZeppein, inheriting from this contract will make the ***nonReentrant*** modifier available.
+- [ReentrancyGuard](https://docs.openzeppelin.com/contracts/3.x/api/utils#ReentrancyGuard) : Made by OpenZeppein, inheriting from this contract will make the **_nonReentrant_** modifier available.
